@@ -54,7 +54,7 @@ router.post('/', (req, res) => {
     });
 });
 
-// Place cette route AVANT router.get('/:url', ...)
+// GET / : tous des liens
 router.get('/history', (req, res) => {
     getAllLinks((err, rows) => {
         if (err) return res.status(500).json({ error: 'DB error' });
@@ -199,5 +199,6 @@ router.get('/:url', (req, res) => {
  *       404:
  *         description: Lien non trouvé
  */
+
 
 export default router;
