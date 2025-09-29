@@ -45,7 +45,7 @@ const swaggerDefinition = {
 
 const options = {
   swaggerDefinition,
-  apis: ['./router/*.mjs'], // Chemin vers tes fichiers de routes
+  apis: ['./router/*.mjs'], // Chemin vers les fichiers de routes
 };
 
 const swaggerSpec = swaggerJSDoc(options);
@@ -61,4 +61,5 @@ app.get('/error', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Serveur lancé sur le port ${PORT}`);
 });
+
 
