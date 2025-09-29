@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>devweb-shortener</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/31f094d00e.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    
+    
+    <div class="menu">
+        
+        <h2 class="title is-2">Historique</h2> <br><br><br>
+        <button id="clear-history-btn" class="button is-danger is-inverted">
+            <span>Delete</span>
+            <span class="icon is-small"><i class="fa-solid fa-xmark fa-sm"></i></span>
+        </button>
+        
+        <div id="history"></div>
+        
+    </div>
+
+
+
+   
+    <section class="section">
+        <h1 class="title is-1">DevWeb-tp6 : Réducteur d’URL</h1>
+    
+        <br>
+
+        <div class="block">
+            <p class="title is-5" id="count"></p>
+            <button class="button is-link is-outlined " id="menuButton">
+                <span>Historique</span>
+                <span class="icon"><i class="fa-solid fa-clock-rotate-left fa-sm" style="color: #4258ff;"></i></i></span>
+            </button>
+        </div>
+
+        <br>
+        
+        <div class="block">
+            <h2 class="title is-2 ">Ajouter un nouveau lien</h2>
+
+            <form id="shorten-form">
+                <label class="label" for="url">Saisissez l'URL à raccourcir</label>
+                <input class="input" name="url" id="url" type="url" placeholder="https://perdu.com" required />
+                
+                <button class="button is-success is-inverted" type="submit">Submit</button>
+            </form>
+        </div>
+        
+        <div class="block" id="result" style="margin-top:2em;"></div>
+    
+    </section>
+   
+    <br>
+    <footer>
+        <p class="subtitle is-6">&copy; Grosseau Eli</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
