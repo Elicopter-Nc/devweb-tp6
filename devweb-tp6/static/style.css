@@ -52,6 +52,7 @@ footer{
   margin-top:8px ;
   margin-left:5px;
   border: 2px solid #4258ff;
+  word-break: break-word;
  
 }
 
@@ -69,5 +70,13 @@ position: fixed;
   padding: 5px 10px;
   cursor: pointer;
   
+}
+
+#history {
+  margin-top: 2rem;
+  max-height: 70vh;    
+  overflow-y: auto;    
+  overflow-x: hidden;
+  word-break: break-word;
 }
 
