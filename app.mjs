@@ -28,6 +28,12 @@ initDB();
 app.use('/api-v1', apiV1Router);
 app.use('/api-v2', apiV2Router);
 
+app.use(express.static(path.join(_directoryName, 'static')));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(_directoryName, 'static', 'client.html'));
+});
+
+
 app.use(favicon(path.join(_directoryName, "static", "logo_univ_16.png")));
 
 // Configuration Swagger
@@ -61,4 +67,5 @@ app.get('/error', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Serveur lancé sur le port ${PORT}`);
 });
+
 
