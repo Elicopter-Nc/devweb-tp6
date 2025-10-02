@@ -90,4 +90,3 @@ menuButton.addEventListener("click", () => {
 updateCount();
 updateHistory();
 
-

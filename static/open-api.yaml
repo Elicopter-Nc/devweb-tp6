@@ -1,0 +1,143 @@
+openapi: 3.0.0
+info:
+  title: devweb-shortener API
+  version: 2.0.0
+  description: API de réduction d'URL avec authentification
+
+servers:
+  - url: http://localhost:8080/api-v2
+    description: Serveur API v2
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+      description: Clé secrète fournie lors de la création du lien
+
+paths:
+  /:
+    get:
+      summary: Obtenir le nombre de liens créés
+      responses:
+        '200':
+          description: Nombre de liens
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+    post:
+      summary: Créer un nouveau lien raccourci
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  example: https://perdu.com
+      responses:
+        '200':
+          description: Lien créé avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  short:
+                    type: string
+                    example: WmFJQp
+                  shortUrl:
+                    type: string
+                    example: http://localhost:8080/api-v2/WmFJQp
+                  secret:
+                    type: string
+                    example: RatQak
+        '400':
+          description: URL invalide
+
+  /{url}:
+    get:
+      summary: Obtenir les informations d'un lien ou redirection
+      parameters:
+        - name: url
+          in: path
+          required: true
+          schema:
+            type: string
+            example: WmFJQp
+      responses:
+        '200':
+          description: Informations du lien (si Accept application/json)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  short:
+                    type: string
+                  long:
+                    type: string
+                  created:
+                    type: string
+                  visit:
+                    type: integer
+        '302':
+          description: Redirection vers l'URL longue (si Accept text/html)
+        '404':
+          description: Lien non trouvé
+    
+    delete:
+      summary: Supprimer un lien raccourci
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: url
+          in: path
+          required: true
+          schema:
+            type: string
+            example: WmFJQp
+      responses:
+        '200':
+          description: Lien supprimé avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: En-tête X-API-KEY manquant
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '403':
+          description: Clé API invalide
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '404':
+          description: Lien non trouvé
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string

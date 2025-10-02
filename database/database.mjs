@@ -8,6 +8,7 @@ export function initDB() {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         short TEXT UNIQUE,
         long TEXT,
+        secret TEXT,
         created DATETIME DEFAULT CURRENT_TIMESTAMP,
         visit INTEGER DEFAULT 0
     )`);
@@ -19,14 +20,14 @@ export function countLinks(callback) {
     });
 }
 
-export function createLink(long, short, callback) {
-    db.run('INSERT INTO links (long, short) VALUES (?, ?)', [long, short], function(err) {
+export function createLink(long, short, secret, callback) {
+    db.run('INSERT INTO links (long, short, secret) VALUES (?, ?, ?)', [long, short, secret], function(err) {
         callback(err, this.lastID);
     });
 }
 
 export function getLink(short, callback) {
-    db.get('SELECT * FROM links WHERE short = ?', [short], (err, row) => {
+    db.get('SELECT short, long, created, visit FROM links WHERE short = ?', [short], (err, row) => {
         callback(err, row);
     });
 }
@@ -43,7 +44,6 @@ export function getStatus(short, callback) {
     });
 }
 
-
 export function getAllLinks(callback) {
     db.all('SELECT short, long FROM links ORDER BY id DESC LIMIT 20', (err, rows) => {
         callback(err, rows);
@@ -53,5 +53,17 @@ export function getAllLinks(callback) {
 export function clearLinks(callback) {
     db.run('DELETE FROM links', function(err) {
         callback(err);
+    });
+}
+
+export function deleteLink(short, secret, callback) {
+    db.get('SELECT secret FROM links WHERE short = ?', [short], (err, row) => {
+        if (err) return callback(err, null);
+        if (!row) return callback(null, { found: false });
+        if (row.secret !== secret) return callback(null, { found: true, authenticated: false });
+        
+        db.run('DELETE FROM links WHERE short = ?', [short], function(err) {
+            callback(err, { found: true, authenticated: true, deleted: this.changes > 0 });
+        });
     });
 }
