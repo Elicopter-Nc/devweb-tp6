@@ -33,7 +33,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(_directoryName, 'static', 'client.html'));
 });
 
-
 app.use(favicon(path.join(_directoryName, "static", "logo_univ_16.png")));
 
 // Configuration Swagger
@@ -41,17 +40,30 @@ const swaggerDefinition = {
   openapi: '3.0.0',
   info: {
     title: 'devweb-shortener API',
-    version: '1.0.0',
-    description: 'Documentation de l’API pour le projet devweb-shortener',
+    version: '2.0.0',
+    description: 'Documentation de l\'API pour le projet devweb-shortener',
   },
   servers: [
-    { url: 'http://localhost:8080' }
+    { url: 'http://localhost:8080' },
+    { url: 'https://devweb-tp6.onrender.com' }
   ],
+  components: {
+    securitySchemes: {
+      ApiKeyAuth: {
+        type: 'apiKey',
+        in: 'header',
+        name: 'X-API-KEY',
+        description: 'Clé secrète fournie lors de la création du lien'
+      }
+    }
+  }
 };
+
+
 
 const options = {
   swaggerDefinition,
-  apis: ['./router/*.mjs'], // Chemin vers tes fichiers de routes
+  apis: ['./router/*.mjs'], 
 };
 
 const swaggerSpec = swaggerJSDoc(options);
@@ -67,5 +79,4 @@ app.get('/error', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Serveur lancé sur le port ${PORT}`);
 });
-
 
